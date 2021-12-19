@@ -7,12 +7,17 @@ namespace ServiceCep.Controllers
 {
     public class CepController : ApiController
     {
+        
         [HttpGet]
         public CepDTO Search(string zipCode)
 
         {
+            //Instansiando o objeto Cep 
             CepDTO cepResult = new CepDTO();
+
+            //Chamando o metodo de busca 
             cepResult = clServiceCep.Search(zipCode);
+
             return cepResult;
         }
     }

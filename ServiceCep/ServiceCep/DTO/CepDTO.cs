@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 
 namespace ServiceCep.DTO
 {
+    //Criação do Objeto Cep no formato que a via cep devolve 
     public class CepDTO
     {
         [JsonProperty("cep")]
