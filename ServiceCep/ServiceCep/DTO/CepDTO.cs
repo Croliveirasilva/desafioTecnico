@@ -35,5 +35,6 @@ namespace ServiceCep.DTO
 
         [JsonProperty("gia")]
         public int? Gia { get; set; }
+
     }
 }

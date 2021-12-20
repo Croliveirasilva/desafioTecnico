@@ -58,6 +58,9 @@ namespace ServiceCep.Models
                     HttpContent conteudo = resposta.Content;
 
                     string resultado = await conteudo.ReadAsStringAsync();
+
+                   var cepCad = Newcep(resultado);
+
                     return JsonConvert.DeserializeObject<CepDTO>(resultado);
 
 
@@ -71,5 +74,52 @@ namespace ServiceCep.Models
 
             }
         }
+
+        //Armazena informações sobre novo cep pesquisado
+
+        internal static tbCepApi Newcep(tbCepApi obj)
+        {
+            tbCepApi CadCep = new tbCepApi();
+
+            using (TransactionScope ts = new TransactionScope())
+            {
+                using (Repository<tbCepApi> repSol = new RepositoryCEP())
+                {
+                    CadCep = new tbCepApi
+                    {
+                        Cep = obj.Cep,
+                        Rua = obj.Rua,
+                        Complemento = obj.Complemento,
+                        Bairro = obj.Bairro,
+                        Cidade = obj.Cidade,
+                        Estado = obj.Estado,
+                        Uf = obj.Uf,
+                        Unidade = obj.Unidade,
+                        CodigoIbge = obj.CodigoIbge,
+                        Gia = obj.Gia,
+                        data = DateTime.Now
+                    };
+                    repSol.Add(CadCep);
+                    
+                }
+                ts.Complete();
+
+                return CadCep;
+            }
+        }
+       
+
+        // realiza a busca pelo Cep recebido
+
+        internal static CepDTO SearchCep(string zipCode)
+        {
+            var sql = $@" select * from tbCepApi where cep ={zipCode}";
+            using (Repository<tbCepApi> repSol = new RepositoryCEP())
+            {
+                CepDTO dados = repSol.Contexto.Database.SqlQuery<tbCepApi>(sql).FirstOrDefault();
+                return dados;
+            }
+        }
+
     }
 }
