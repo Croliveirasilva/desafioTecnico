@@ -20,7 +20,7 @@ namespace ServiceCep.Controllers
             cepResult = clServiceCep.SearchCep(zipCode);
 
             // se o metodo retornar vazio ele realiza a busca na api via cep
-            if (cepResult == "")
+            if (cepResult.count == 0)
             {
                 //Chamando o metodo de busca via cep
                 cepResult = clServiceCep.Search(zipCode);
